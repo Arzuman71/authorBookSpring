@@ -38,15 +38,7 @@ public class AuthorController {
     }
 
     @PostMapping("/addAuthor")
-    public String addUser(@RequestParam("name") String name, @RequestParam("surname") String surname, @RequestParam("email") String email
-            , @RequestParam("gender") String gender, @RequestParam("bio") String bio) {
-        Author author = Author.builder()
-                .name(name)
-                .surname(surname)
-                .email(email)
-                .gender(Gender.valueOf(gender))
-                .bio(bio)
-                .build();
+    public String addUser(@ModelAttribute("author") Author author) {
 
         authorRepository.save(author);
         return "redirect:/";
@@ -62,11 +54,20 @@ public class AuthorController {
     }
 
     @PostMapping("/changeAuthor")
-    public String changeAuthor(ModelMap modelMap, @ModelAttribute Author author) {
+    public String changeAuthor(@ModelAttribute Author author) {
         authorRepository.save(author);
 
         return "redirect:/";
 
     }
+
+    //  @GetMapping("/allAuthorId")
+    //  public String allAuthorId(ModelMap modelMap) {
+    //      List authors = authorRepository.findAll();
+    //      modelMap.addAttribute("authors",authors);
+    //      return "redirect:/";
+
+    //  }
+
 }
 
