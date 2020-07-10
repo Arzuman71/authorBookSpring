@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Change</title>
+
+</head>
+<body>
+
+<div th:${book} th:if="${book !=null}">
+    <h2>change Book </h2>
+    <form action="/changeBook" method="post">
+        <input th:value="${book.get().id}" name="id" type="hidden">
+        <input th:value="${book.get().title}" name="title" type="text" placeholder="title">
+        <input th:value="${book.get().description}" name="description" type="text" placeholder="description">
+        <input th:value="${book.get().price}" name="price" type="number" placeholder="price">
+        <input th:value="${book.get().author_id}" name="author_id" type="number" placeholder="author">
+        <input type="submit" value="Add Book">
+    </form>
+</div>
+
+
+<div th:if="${author !=null}">
+    <h2>change Author </h2>
+    <form action="/changeAuthor" method="post">
+        <input th:value="${author.get().id}" name="id" type="hidden"><br>
+        <input th:value="${author.get().name}" name="name" type="text" placeholder="name"><br>
+        <input th:value="${author.get().surname}" name="surname" type="text" placeholder="surname"><br>
+        <input th:value="${author.get().email}" name="email" type="text" placeholder="email"><br>
+        <select name="gender">
+            <option th:text="${author.get().gender}" selected></option>
+            <option value="MALE">MALE</option>
+            <option value="FEMALE">FEMALE</option>
+        </select><br>
+        <input th:value="${author.get().bio}" name="bio" type="text" placeholder="bio"><br>
+        <input type="submit" value="change">
+    </form>
+</div>
+<a href="/home">home</a>
+
+</body>
+</html>
