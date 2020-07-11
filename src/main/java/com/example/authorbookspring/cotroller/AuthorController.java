@@ -3,7 +3,6 @@ package com.example.authorbookspring.cotroller;
 
 import com.example.authorbookspring.model.Author;
 
-import com.example.authorbookspring.model.Gender;
 import com.example.authorbookspring.repository.AuthorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,6 +19,13 @@ import java.util.Optional;
 public class AuthorController {
     @Autowired
     private AuthorRepository authorRepository;
+
+
+    @GetMapping("/")
+    public String homePage() {
+        return "index";
+    }
+
 
     @GetMapping("/authorHome")
     public String authorHome(ModelMap modelMap) {

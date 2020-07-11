@@ -16,8 +16,10 @@ import java.util.Optional;
 
 @Controller
 public class BookController {
+
     @Autowired
     private BookRepository bookRepository;
+
 
     @GetMapping("/bookHome")
     public String bookHomePage(ModelMap modelMap) {
@@ -26,11 +28,7 @@ public class BookController {
         return "bookHome";
     }
 
-    @GetMapping("/home")
-    public String aboutPage() {
 
-        return "redirect:/";
-    }
 
     @GetMapping("/deleteBook")
     public String deleteBook(@RequestParam("id") int id) {
