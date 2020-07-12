@@ -9,6 +9,8 @@
 <h1>AuthorHome</h1>
 <ul>
     <div th:each="author:${authors}">
+        <img th:src="@{/image(name=${author.profilePic})}" width="20"
+             th:if="${author.profilePic != null && author.profilePic.length() != 0}"/>
         <li th:text="${author.name}"></li>
         <li th:text="${author.surname}"></li>
         <li th:text="${author.email}"></li>

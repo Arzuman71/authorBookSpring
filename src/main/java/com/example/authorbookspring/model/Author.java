@@ -27,5 +27,6 @@ public class Author {
     @Column(columnDefinition="enum('MALE','FEMALE')")
     private Gender gender;
     private String bio;
+    private String profilePic;
 
 }

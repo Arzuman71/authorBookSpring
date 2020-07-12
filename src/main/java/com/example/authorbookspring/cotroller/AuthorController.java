@@ -1,28 +1,39 @@
 package com.example.authorbookspring.cotroller;
 
-
 import com.example.authorbookspring.model.Author;
 
 import com.example.authorbookspring.repository.AuthorRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import org.apache.commons.io.IOUtils;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
-import java.util.Optional;
 
+@RequiredArgsConstructor
 @Controller
 public class AuthorController {
-    @Autowired
-    private AuthorRepository authorRepository;
 
+    private final AuthorRepository authorRepository;
+
+    @Value("${file.upload.dir}")
+    private String uploadDir;
 
     @GetMapping("/")
-    public String homePage() {
+    public String homePage(Model modelMap, @RequestParam(name = "msg", required = false) String msg) {
+        List<Author> authors = authorRepository.findAll();
+        modelMap.addAttribute("msg", msg);
+        modelMap.addAttribute("authors", authors);
         return "index";
     }
 
@@ -43,37 +54,32 @@ public class AuthorController {
         return "redirect:/authorHome";
     }
 
-    @PostMapping("/addAuthor")
-    public String addUser(@ModelAttribute("author") Author author) {
-
+    @PostMapping("/saveAuthor")
+    public String addUser(@ModelAttribute("author") Author author, @RequestParam("image") MultipartFile file) throws IOException {
+        String name = System.currentTimeMillis() + "_" + file.getOriginalFilename();
+        File image = new File(uploadDir, name);
+        file.transferTo(image);
+        author.setProfilePic(name);
         authorRepository.save(author);
-        return "redirect:/";
+        return "redirect:/?msg=Author was added";
     }
 
     @GetMapping("/authorById")
     public String authorById(ModelMap modelMap, @RequestParam("id") int id) {
-
-        Optional<Author> author = authorRepository.findById(id);
+        Author author = authorRepository.getOne(id);
         modelMap.addAttribute("author", author);
         return "change";
 
     }
 
-    @PostMapping("/changeAuthor")
-    public String changeAuthor(@ModelAttribute Author author) {
-        authorRepository.save(author);
-
-        return "redirect:/";
-
+    @GetMapping(value = "/image",
+            produces = MediaType.IMAGE_JPEG_VALUE
+    )
+    public @ResponseBody
+    byte[] getImage(@RequestParam("name") String imageName) throws IOException {
+        InputStream in = new FileInputStream(uploadDir + File.separator + imageName);
+        return IOUtils.toByteArray(in);
     }
-
-    //  @GetMapping("/allAuthorId")
-    //  public String allAuthorId(ModelMap modelMap) {
-    //      List authors = authorRepository.findAll();
-    //      modelMap.addAttribute("authors",authors);
-    //      return "redirect:/";
-
-    //  }
 
 }
 

@@ -3,19 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <title>index</title>
+    <link href="/style.css" rel="stylesheet">
 </head>
 <body>
 <h1> Welcome </h1>
+<h3 th:text="${msg}"></h3>
 addBook
-<form action="/addBook" method="post">
+<form action="/saveBook" method="post">
     <input name="title" type="text" placeholder="title">
     <input name="description" type="text" placeholder="description">
     <input name="price" type="text" placeholder="price">
-    <input name="author_id" type="number" placeholder="author">
+    <select name="user.id">
+        <option th:each="author:${authors}" th:value="${author.id}" th:text="${author.name}" ></option>
+    </select>
     <input type="submit" value="Add Book">
 </form>
 addAuthor
-<form action="/addAuthor" method="post">
+<form action="/saveAuthor" method="post" enctype="multipart/form-data">
     <input name="name" type="text" placeholder="name">
     <input name="surname" type="text" placeholder="surname">
     <input name="email" type="text" placeholder="email">
@@ -25,6 +29,7 @@ addAuthor
         <option value="FEMALE">FEMALE</option>
     </select><br>
     <textarea name="bio" type="text" placeholder="bio"></textarea>
+    <input name="image" type="file">
     <input type="submit" value="Add User">
 </form>
 <br>

@@ -13,7 +13,7 @@
         <li th:text="${book.title}"></li>
         <li th:text="${book.description}"></li>
         <li th:text="${book.price}"></li>
-        <li th:text="${book.author_id}"></li>
+        <li th:text="${book.author.name}"></li>
 
         <a th:href="@{/deleteBook(id=${book.id})}">delete</a>
 

@@ -23,6 +23,6 @@ public class Book {
     private String description;
     @Column
     private String price;
-    @Column
-    private String author_id;
+    @ManyToOne(fetch = FetchType.EAGER)
+    private Author author;
 }
