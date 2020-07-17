@@ -6,15 +6,19 @@
     <link href="/style.css" rel="stylesheet">
 </head>
 <body>
-<h1> Welcome </h1>
+<a href="/logout" th:if="${authorName != null}">logout</a>
+<a href="/login" th:if="${authorName == null}">login</a>
+
+<h2 th:if="authorName != null" th:text="Welcome + ' ' + ${authorName}" > </h2>
 <h3 th:text="${msg}"></h3>
 addBook
 <form action="/saveBook" method="post">
     <input name="title" type="text" placeholder="title">
     <input name="description" type="text" placeholder="description">
     <input name="price" type="text" placeholder="price">
-    <select name="user.id">
-        <option th:each="author:${authors}" th:value="${author.id}" th:text="${author.name}" ></option>
+    <select name="author.id">
+
+        <option th:each=" author :${authors}" th:value="${author.getId()}" th:text="${author.name}"></option>
     </select>
     <input type="submit" value="Add Book">
 </form>
